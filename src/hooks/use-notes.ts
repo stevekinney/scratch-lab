@@ -7,6 +7,7 @@ const storage = createStorage();
 
 export function useNotes() {
   const [notes, setNotes] = useState<Note[]>([]);
+  const [allNotes, setAllNotes] = useState<Note[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -17,6 +18,9 @@ export function useNotes() {
     try {
       const result = await storage.getAll(options);
       setNotes(result);
+      if (!options?.search) {
+        setAllNotes(result);
+      }
       setError(null);
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Failed to load notes');
@@ -28,6 +32,7 @@ export function useNotes() {
     storage.getAll().then((result) => {
       if (cancelled) return;
       setNotes(result);
+      setAllNotes(result);
       setLoading(false);
     });
     return () => {
@@ -78,5 +83,5 @@ export function useNotes() {
     setSelectedId(id);
   }, []);
 
-  return { notes, selectedNote, loading, error, createNote, updateNote, deleteNote, selectNote, refresh };
+  return { notes, allNotes, selectedNote, loading, error, createNote, updateNote, deleteNote, selectNote, refresh };
 }

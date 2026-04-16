@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useState } from 'react';
+import { useEffect, useCallback, useState, useRef } from 'react';
 import { useRouter } from './hooks/use-router';
 import { useNotes } from './hooks/use-notes';
 import { useMediaQuery } from './hooks/use-media-query';
@@ -12,11 +12,14 @@ import { PromoBanner } from './components/promo-banner';
 
 export default function Application() {
   const { path, noteId, navigate } = useRouter();
-  const { notes, selectedNote, loading, createNote, updateNote, deleteNote, selectNote, refresh } =
+  const { notes, allNotes, selectedNote, loading, createNote, updateNote, deleteNote, selectNote, refresh } =
     useNotes();
   const isDesktop = useMediaQuery('(min-width: 768px)');
   const [isNewNote, setIsNewNote] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const isCreatingRef = useRef(false);
+  const allNotesRef = useRef(allNotes);
+  allNotesRef.current = allNotes;
 
   const debouncedRefresh = useDebounce(
     (query: string) => refresh({ search: query || undefined }),
@@ -35,10 +38,12 @@ export default function Application() {
     [debouncedRefresh, refresh],
   );
 
-  // Sync router → state
+  // Sync router → state and clear search on navigation
   useEffect(() => {
     selectNote(noteId);
-  }, [noteId, selectNote]);
+    setSearchQuery('');
+    refresh();
+  }, [noteId, selectNote, refresh]);
 
   const handleSelect = useCallback(
     (id: string) => {
@@ -49,15 +54,22 @@ export default function Application() {
   );
 
   const handleCreate = useCallback(async () => {
-    const note = await createNote();
-    setIsNewNote(true);
-    navigate(`/notes/${note.id}`);
+    if (isCreatingRef.current) return;
+    isCreatingRef.current = true;
+    try {
+      const note = await createNote();
+      setIsNewNote(true);
+      navigate(`/notes/${note.id}`);
+    } finally {
+      isCreatingRef.current = false;
+    }
   }, [createNote, navigate]);
 
   const handleDelete = useCallback(
     async (id: string) => {
-      const index = notes.findIndex((n) => n.id === id);
-      const remaining = notes.filter((n) => n.id !== id);
+      const all = allNotesRef.current;
+      const index = all.findIndex((n) => n.id === id);
+      const remaining = all.filter((n) => n.id !== id);
       await deleteNote(id);
       if (remaining.length > 0) {
         const nextIndex = Math.min(index, remaining.length - 1);
@@ -66,7 +78,7 @@ export default function Application() {
         navigate('/');
       }
     },
-    [notes, deleteNote, navigate],
+    [deleteNote, navigate],
   );
 
   const handleBack = useCallback(() => {

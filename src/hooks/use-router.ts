@@ -10,7 +10,7 @@ function parsePath(): Route {
   if (pathname === '/') {
     return { path: '/', noteId: null };
   }
-  const noteMatch = pathname.match(/^\/notes\/(.+)$/);
+  const noteMatch = pathname.match(/^\/notes\/([^/]+)$/);
   if (noteMatch) {
     return { path: '/notes/:id', noteId: noteMatch[1] };
   }
