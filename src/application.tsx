@@ -26,9 +26,13 @@ export default function Application() {
   const handleSearch = useCallback(
     (query: string) => {
       setSearchQuery(query);
-      debouncedRefresh(query);
+      if (query) {
+        debouncedRefresh(query);
+      } else {
+        refresh();
+      }
     },
-    [debouncedRefresh],
+    [debouncedRefresh, refresh],
   );
 
   // Sync router → state
