@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "deploy": "node scripts/deploy.mjs",
     "build:lambda": "npm run build --prefix lambda",
     "build:lambda:check": "npm run build:check --prefix lambda",
     "lint": "eslint .",

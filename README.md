@@ -95,7 +95,34 @@ Edge functions and the distribution configuration used in the CloudFront section
 | File | Used In |
 | --- | --- |
 | `deploy.sh` | Automating Deploys with the AWS CLI |
+| `scripts/deploy.mjs` | Node-based build + deploy (run via `npm run deploy`) |
 | `.github/workflows/deploy.yml` | CI/CD with GitHub Actions |
+
+#### Running `npm run deploy`
+
+`scripts/deploy.mjs` builds the app in `src/` (via `npm run build`) and uploads `dist/` to S3 using the AWS CLI. It reads configuration from a local `.env` file.
+
+1. Copy the example env file and fill in your bucket name:
+
+   ```bash
+   cp .env.example .env
+   ```
+
+2. Make sure the AWS CLI is installed and your credentials are configured (`aws configure` or `AWS_PROFILE`/`AWS_ACCESS_KEY_ID` env vars).
+
+3. Run the deploy:
+
+   ```bash
+   npm run deploy
+   ```
+
+Environment variables (see `.env.example`):
+
+| Variable | Required | Purpose |
+| --- | --- | --- |
+| `S3_BUCKET` | Yes | Target bucket for the built assets |
+| `AWS_REGION` | No | Region for the bucket and CloudFront (defaults to `us-east-1`) |
+| `CLOUDFRONT_DISTRIBUTION_ID` | No | If set, the script also creates a CloudFront invalidation |
 
 ## Placeholder Values
 
