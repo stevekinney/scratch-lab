@@ -101,7 +101,7 @@ export default function Application() {
     />
   );
 
-  const noteNotFound = noteId !== null && !selectedNote;
+  const noteNotFound = noteId !== null && !selectedNote && !searchQuery;
 
   const detail = selectedNote ? (
     <NoteEditor
