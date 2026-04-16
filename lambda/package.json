@@ -1,0 +1,21 @@
+{
+  "name": "scratch-lab-lambda",
+  "private": true,
+  "scripts": {
+    "build:check": "tsc --noEmit",
+    "build": "node build.mjs",
+    "build:greeting": "node build.mjs greeting-handler",
+    "build:items": "node build.mjs items-handler",
+    "build:dynamodb": "node build.mjs dynamodb-handler",
+    "build:secrets": "node build.mjs secrets-handler",
+    "build:scratch-lab": "node build.mjs scratch-lab-handler",
+    "package": "cd dist && zip -j ../function.zip",
+    "clean": "rm -rf dist function.zip"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.161",
+    "@types/node": "^24.12.2",
+    "esbuild": "^0.25.0",
+    "typescript": "~6.0.2"
+  }
+}

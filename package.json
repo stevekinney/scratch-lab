@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "build:lambda": "npm run build --prefix lambda",
+    "build:lambda:check": "npm run build:check --prefix lambda",
     "lint": "eslint .",
     "preview": "vite preview"
   },

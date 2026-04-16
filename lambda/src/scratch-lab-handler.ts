@@ -9,8 +9,10 @@ import {
 } from '@aws-sdk/lib-dynamodb';
 import { SSMClient, GetParameterCommand } from '@aws-sdk/client-ssm';
 
-const TABLE_NAME = 'scratch-lab-notes';
-const SEARCH_API_KEY_PARAM = '/scratch-lab/production/search-api-key';
+const TABLE_NAME = process.env.TABLE_NAME || 'scratch-lab-notes';
+const SEARCH_API_KEY_PARAM =
+  process.env.SEARCH_API_KEY_PARAM || '/scratch-lab/production/search-api-key';
+const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGIN || '*';
 
 const ddb = DynamoDBDocumentClient.from(new DynamoDBClient({}));
 const ssm = new SSMClient({});
@@ -30,7 +32,7 @@ const loadSearchApiKey = async (): Promise<string> => {
 };
 
 const corsHeaders = {
-  'Access-Control-Allow-Origin': 'https://example.com',
+  'Access-Control-Allow-Origin': ALLOWED_ORIGIN,
   'Access-Control-Allow-Methods': 'GET,POST,PUT,DELETE,OPTIONS',
   'Access-Control-Allow-Headers': 'content-type,x-notepad-user-id',
 };
@@ -60,15 +62,24 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
           ExpressionAttributeValues: { ':u': userId },
         }),
       );
-      return json(200, result.Items ?? []);
+      const notes = (result.Items ?? []).map((item) => ({
+        id: item.noteId,
+        title: item.title,
+        body: item.body,
+        createdAt: item.createdAt,
+        updatedAt: item.updatedAt,
+      }));
+      return json(200, notes);
     }
 
     if (method === 'POST' && routeKey === 'POST /notes') {
       const body = event.body ? JSON.parse(event.body) : {};
       const now = new Date().toISOString();
+      const id = body.id || crypto.randomUUID();
       const note = {
         userId,
-        noteId: body.id,
+        noteId: id,
+        id,
         title: body.title ?? '',
         body: body.body ?? '',
         createdAt: body.createdAt ?? now,
