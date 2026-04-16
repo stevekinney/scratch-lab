@@ -1,0 +1,11 @@
+{
+  "requestContext": {
+    "http": {
+      "method": "GET",
+      "path": "/"
+    }
+  },
+  "queryStringParameters": {
+    "userId": "user-123"
+  }
+}

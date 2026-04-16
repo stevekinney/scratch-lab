@@ -1,0 +1,11 @@
+{
+  "requestContext": {
+    "http": {
+      "method": "GET",
+      "path": "/greeting"
+    }
+  },
+  "queryStringParameters": {
+    "name": "Lambda"
+  }
+}

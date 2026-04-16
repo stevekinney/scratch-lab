@@ -1,0 +1,12 @@
+{
+  "requestContext": {
+    "http": {
+      "method": "POST",
+      "path": "/"
+    }
+  },
+  "queryStringParameters": {
+    "userId": "user-123"
+  },
+  "body": "{\"title\": \"Learn DynamoDB\"}"
+}

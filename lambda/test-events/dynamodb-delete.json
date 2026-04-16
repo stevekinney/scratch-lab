@@ -1,0 +1,12 @@
+{
+  "requestContext": {
+    "http": {
+      "method": "DELETE",
+      "path": "/"
+    }
+  },
+  "queryStringParameters": {
+    "userId": "user-123",
+    "itemId": "REPLACE_WITH_ACTUAL_ITEM_ID"
+  }
+}

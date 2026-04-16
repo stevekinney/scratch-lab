@@ -1,0 +1,22 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "PublicReadStaticAssets",
+      "Effect": "Allow",
+      "Principal": "*",
+      "Action": "s3:GetObject",
+      "Resource": [
+        "arn:aws:s3:::my-frontend-app-assets/*.html",
+        "arn:aws:s3:::my-frontend-app-assets/*.css",
+        "arn:aws:s3:::my-frontend-app-assets/*.js",
+        "arn:aws:s3:::my-frontend-app-assets/*.png",
+        "arn:aws:s3:::my-frontend-app-assets/*.jpg",
+        "arn:aws:s3:::my-frontend-app-assets/*.ico",
+        "arn:aws:s3:::my-frontend-app-assets/*.woff2",
+        "arn:aws:s3:::my-frontend-app-assets/*.webp",
+        "arn:aws:s3:::my-frontend-app-assets/*.svg"
+      ]
+    }
+  ]
+}
