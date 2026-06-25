@@ -1,6 +1,7 @@
 # Scratch Lab
 
-Scratch Lab is the example application and companion repository for the [AWS for Frontend Engineers](https://stevekinney.com/courses/aws) course. It's a simple React + TypeScript notepad app built with Vite that you'll deploy to AWS throughout the course.
+Scratch Lab is the example application and companion repository for the [Deploying Web Applications on AWS
+](https://stevekinney.com/courses/aws) course from [Master.dev](https://master.dev/courses/aws-v3/). It's a simple React + TypeScript notepad app built with Vite that you'll deploy to AWS throughout the course.
 
 ## What's in This Repository
 
